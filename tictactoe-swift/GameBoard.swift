@@ -11,7 +11,7 @@ import Foundation
 
 func fromExprToBoard(s: String) -> Board {
     /* using functor fmap on optional value */
-    let board = toBoard <^> fromExpr().parse(s)?.0
+    let board = fromExpr().parse(s)?.0 >>- toBoard
     return board ?? []
 }
 
@@ -21,8 +21,8 @@ func fromBoardToExpr(b: Board) -> String {
 
 //MARK: fileprivate
 
-fileprivate func toBoard(parsedString s: String) -> Board {
-    return r_toBoard(string: s, board: [])
+fileprivate func toBoard(parsedString s: String) -> Board? {
+    return r_toBoard(string: s, board: []) ?? []
 }
 
 fileprivate func fromPositionToExpr(p: Position) -> String {
@@ -44,7 +44,7 @@ fileprivate func parseFromBoardToExpr(s: String, b: Board) -> String {
     return parseFromBoardToExpr(s: s + fromPositionToExpr(p: head) + ";", b: Board(tail))
 }
 
-fileprivate func r_toBoard(string s: String, board b: Board) -> Board {
+fileprivate func r_toBoard(string s: String, board b: Board) -> Board? {
     var board = b
     var elements = s.characters
     if elements.count == 0 {
@@ -57,6 +57,6 @@ fileprivate func r_toBoard(string s: String, board b: Board) -> Board {
     
     let pos = Position(x: x, y: y, player: player)
     board.append(pos)
-    board = r_toBoard(string: String(elements), board: board)
+    board = r_toBoard(string: String(elements), board: board) ?? []
     return board
 }

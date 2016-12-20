@@ -21,7 +21,6 @@ func fromExpr() -> Parser<String> {
 }
 
 
-
 fileprivate func expr() -> Parser<String> {
     return satisfy { isPos(c: $0) }
         <> satisfy { isPos(c: $0) }
@@ -154,3 +153,8 @@ func uncons<C: Collection>(_ xs: C) -> Optional<(C.Iterator.Element, C.SubSequen
     }
 }
 
+// Monad
+
+func >>-<T, U>(a: T?, f: (T) -> U?) -> U? {
+    return a.flatMap(f)
+}

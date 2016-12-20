@@ -12,11 +12,15 @@ infix operator <|> : ComparisonPrecedence // or
 
 infix operator <> : AdditionPrecedence // append
 
-infix operator <^> : FunctorPrecedence // fmap 
+infix operator <^> : FunctorPrecedence // map
 
 infix operator <*> : FunctorPrecedence // apply wrapped func to wrapped value
+
+infix operator >>- : FunctorPrecedence // monad fmap
 
 precedencegroup FunctorPrecedence {
     associativity: left
     higherThan: NilCoalescingPrecedence
 }
+
+
