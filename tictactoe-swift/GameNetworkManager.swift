@@ -12,14 +12,14 @@ let firstPlayer = "1"
 let secondPlayer = "2"
 
 func start(name: String, player: String) {
-    
-    if player == firstPlayer {
+    switch player {
+    case firstPlayer:
         attack(
             gameName: name,
             player: player,
             board: []
         )
-    } else {
+    default:
         defend(
             gameName: name,
             player: player

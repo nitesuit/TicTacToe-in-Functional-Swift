@@ -7,7 +7,7 @@
 
 import Foundation
 
-//Mark: Game Movement Logic
+//MARK: Game Movement Logic
 
 func getNextPosition(onBoard b: Board) -> Position {
     if b.isEmpty { return GameLogicData.initialPosition }
@@ -61,7 +61,7 @@ func appendPosition(_ p: Position, withBoard b: Board) -> Board {
     return board
 }
 
-//Mark: Game Validation Logic
+//MARK: Game Validation Logic
 
 func isGameOver(onBoard b: Board) -> Bool {
     if b.isEmpty { return false }
@@ -101,11 +101,7 @@ func countPlayer(_ p: Player, onBoard b: Board) -> Int {
         .count
 }
 
-//Mark: fileprivate
-
-fileprivate func r_isPlayerWinner(_ player: Player, onBoard b: Board, winningCoords p: [[Coord]]) -> Bool {
-    return true
-}
+//MARK: fileprivate
 
 fileprivate func getCoords(fromBoard b: Board) -> [Coord] {
     return b

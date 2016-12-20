@@ -19,7 +19,7 @@ func fromBoardToExpr(b: Board) -> String {
     return parseFromBoardToExpr(s: "l[", b: b)
 }
 
-//Mark: fileprivate
+//MARK: fileprivate
 
 fileprivate func toBoard(parsedString s: String) -> Board {
     return r_toBoard(string: s, board: [])

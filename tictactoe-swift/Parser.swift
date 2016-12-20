@@ -16,11 +16,11 @@ struct Parser<A> {
 
 func fromExpr() -> Parser<String> {
     return isEmpty()
-        <|> manyUntil
-        <^> expr()
-        <*> isEnding
+        <|> manyUntil <^> expr() <*> isEnding
         ?? pure(a: "")
 }
+
+
 
 fileprivate func expr() -> Parser<String> {
     return satisfy { isPos(c: $0) }
@@ -37,7 +37,7 @@ fileprivate func isEmpty() -> Parser<String> {
     }
 }
 
-//Mark: Repeats the Parser until the condition
+// Repeats the Parser until the condition
 
 func manyUntil(p: Parser<String>) -> (_ predicate: ((String) -> Bool)?) -> Parser<String> {
     return { predicate in
@@ -50,8 +50,11 @@ func manyUntil(p: Parser<String>) -> (_ predicate: ((String) -> Bool)?) -> Parse
             if predicate!(remainder) {
                 return (s, "")
             }
-        
-            guard let (ans, _) = manyUntil(p: expr())(predicate).parse(String(remainder)) else {
+            
+            guard
+                let parser = manyUntil <^> expr() <*> isEnding,
+                let (ans,_) = parser.parse(String(remainder))
+                else {
                 print("Could not parse input")
                 return (input, "")
             }
@@ -60,7 +63,7 @@ func manyUntil(p: Parser<String>) -> (_ predicate: ((String) -> Bool)?) -> Parse
     }
 }
 
-//Mark: Or
+// Or
 
 func <|> <A>(p: Parser<A>, q: Parser<A>) -> Parser<A> {
     return Parser { input in
@@ -73,7 +76,7 @@ func <|> <A>(p: Parser<A>, q: Parser<A>) -> Parser<A> {
 }
 
 
-//Mark: Combining to Parsers into One
+// Combining Parsers into One
 
 func combine <A>(p: Parser<A>, b: Parser<A>) -> Parser<[A]> {
     return Parser { input in
@@ -86,7 +89,7 @@ func combine <A>(p: Parser<A>, b: Parser<A>) -> Parser<[A]> {
     }
 }
 
-//Mark: functor fmap with optionals
+//Functor fmap with optionals
 
 func <^><A, B>(f: (A) -> B, a: A?) -> B? {
     switch a {
@@ -95,7 +98,7 @@ func <^><A, B>(f: (A) -> B, a: A?) -> B? {
     }
 }
 
-//Mark: applicative apply with optionals
+//Applicative apply with optionals
 
 func <*><A, B>(f: ((A) -> B)?, a: A?) -> B? {
     switch f {
@@ -104,13 +107,13 @@ func <*><A, B>(f: ((A) -> B)?, a: A?) -> B? {
     }
 }
 
-//Mark: Combining to String Parsers into One
+//CCombining to String Parsers into One
 
 func <> (p: Parser<String>, b: Parser<String>) -> Parser<String> {
    return create(p: combine(p: p, b: b))
 }
 
-//Mark: Creating Parser<String> from Parser<[String]>
+//Creating Parser<String> from Parser<[String]>
 
 func create(p: Parser<[String]>) -> Parser<String>  {
     return Parser { input in
@@ -118,6 +121,8 @@ func create(p: Parser<[String]>) -> Parser<String>  {
         return (a.reduce("", +), s)
     }
 }
+
+//Checking for the predicate
 
 func satisfy(predicate: @escaping (String) -> Bool) -> Parser<String> {
     return Parser { input in
@@ -131,12 +136,13 @@ func satisfy(predicate: @escaping (String) -> Bool) -> Parser<String> {
     }
 }
 
-// Applicative pure
+// Creating new parser
+
 func pure<A>(a: A) -> Parser<A> {
     return Parser { (a, $0) }
 }
 
-//Mark: Unconstructing collection to Tuple (like in Haskell)
+//Unconstructing collection to Tuple (like in Haskell)
 
 func uncons<C: Collection>(_ xs: C) -> Optional<(C.Iterator.Element, C.SubSequence)>
 {

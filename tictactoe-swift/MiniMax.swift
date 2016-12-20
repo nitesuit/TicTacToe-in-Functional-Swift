@@ -14,7 +14,7 @@ func getMiniMaxPosition(onBoard b: Board) -> Position {
         .nextPosition
 }
 
-//Mark: fileprivate func
+//MARK: fileprivate func
 
 fileprivate func getScore(forBoard b: Board) -> Int {
     guard let winner = getWinner(onBoard: b) else { return 0 }
@@ -116,7 +116,7 @@ struct MiniMaxResult {
     }
 }
 
-//Mark: Score calculation
+//MARK: Score calculation
 
 func getMaximumScoreResults(miniMaxResults mr: [MiniMaxResult]) -> [MiniMaxResult] {
     let maxScore = getMaximumScoreResult(miniMaxResults: mr).score
