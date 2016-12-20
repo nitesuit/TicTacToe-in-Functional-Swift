@@ -106,8 +106,8 @@ func getMinimumLevelResult(miniMaxResults mr: [MiniMaxResult]) -> MiniMaxResult 
 
 struct MiniMaxResult {
     let nextPosition: Position
-    var level: Int
-    var score: Int
+    let level: Int
+    let score: Int
 
     init(position p: Position, level l: Int, score s: Int) {
         self.nextPosition = p
