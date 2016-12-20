@@ -20,7 +20,7 @@ func postRequest(withPath p: URL, body: String) {
     
     let (_, _, error) = URLSession.shared.synchronousDataTask(with: urlRequest)
     
-    guard error == nil else {
+    guard let _ = error else {
         print("Error: \(error)")
         return
     }
@@ -33,9 +33,9 @@ func getRequest(withPath p: URL) -> String {
     urlRequest.httpMethod = "GET"
     urlRequest.setValue(acceptHeader, forHTTPHeaderField: "Accept")
     
-     let (data, _, error) = URLSession.shared.synchronousDataTask(with: urlRequest)
+    let (data, _, error) = URLSession.shared.synchronousDataTask(with: urlRequest)
     
-    guard error == nil else {
+    guard let _ = error else  {
         print("Error: \(error)")
         return ""
     }
